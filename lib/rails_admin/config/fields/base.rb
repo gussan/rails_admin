@@ -215,6 +215,8 @@ module RailsAdmin
 
         def editable?
           return false if @properties && @properties[:read_only]
+          # for rails4.0 
+          return true unless bindings[:object].class.respond_to?(:active_authorizer)
           active_model_attr_accessible = !bindings[:object].class.active_authorizer[bindings[:view].controller.send(:_attr_accessible_role)].deny?(self.method_name)
           return true if active_model_attr_accessible
           if RailsAdmin::Config.yell_for_non_accessible_fields
