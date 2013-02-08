@@ -16,7 +16,11 @@ module RailsAdmin
         end
 
         def set_attributes(attributes, role = nil)
-          object.assign_attributes(attributes, :as => role)
+          if object.method(:assign_attributes).arity > 0
+            object.assign_attributes(attributes)
+          else
+            object.assign_attributes(attributes, :as => role)
+          end
         end
 
         def save(options = { :validate => true })
